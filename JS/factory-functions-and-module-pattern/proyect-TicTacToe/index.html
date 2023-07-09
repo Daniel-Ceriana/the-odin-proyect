@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>TicTacToe</h1>
+
+    <form action="">
+        <article>
+            <label for="players">Number of players</label>
+            <select name="players" id="players">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </article>
+        <article>
+            <label for="player-1-name">Player 1 name:</label>
+            <input type="text" name="player-1-name" id="player-1-name">
+        </article>
+        <article>
+            <label for="player-2-name">Player 2 name:</label>
+            <input type="text" name="player-2-name" id="player-2-name" disabled>
+            <!-- logica para que cuando el select tenga dos jugadores, lo habilite -->
+        </article>
+
+        <article>
+            <button type="button">Start</button>
+            <button type="button">Restart</button>
+
+        </article>
+    </form>
+
+
+    <table>
+        <tbody>
+            <tr>
+                <td><button id="1" type="button">X</button></td>
+                <td><button id="2" type="button">X</button></td>
+                <td><button id="3" type="button">X</button></td>
+            </tr>
+            <tr>
+                <td><button id="4" type="button">O</button></td>
+                <td><button id="5" type="button">O</button></td>
+                <td><button id="6" type="button">O</button></td>
+            </tr>
+            <tr>
+                <td><button id="7" type="button">O</button></td>
+                <td><button id="8" type="button">X</button></td>
+                <td><button id="9" type="button">O</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="script/index.js" defer></script>
+</body>
+
+</html>
