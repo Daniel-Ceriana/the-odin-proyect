@@ -10,9 +10,6 @@ const GameBoard = (() => {
     const gameBoard = [];
 
 
-
-
-
     //sets everything so that the game starts
     function gameStart() {
         let x = 1;
@@ -53,15 +50,24 @@ const GameBoard = (() => {
         gameBoard[i][j] = value
     }
 
+    function gameBoardIsTileAvailable(indexI, indexJ) {
+        if (gameBoard[indexI][indexJ] != "X" && gameBoard[indexI][indexJ] != "O") {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
 
-    return { gameStart, gameOver, gameReset, gameBoard, gameBoardChange }
+    return { gameStart, gameOver, gameReset, gameBoardChange, gameBoard, gameBoardIsTileAvailable }
 })();
 
 const DisplayController = () => {
     const gameButtons = document.querySelectorAll(".game-button");
     const buttonsLength = gameButtons.length;
     const gameBoardArray = [];
+    const turnLabel = document.querySelector(".turn");
 
 
     function gameRender(gameBoard, start = 0) {
@@ -85,8 +91,11 @@ const DisplayController = () => {
         gameButtons[tile].textContent = value;
     }
 
+    function displayTurn(turn) {
+        turnLabel.textContent = turn;
+    }
 
-    return { gameRender, playerClickRender };
+    return { gameRender, playerClickRender, displayTurn };
 }
 
 
@@ -95,9 +104,15 @@ const Game = (() => {
     const gameButtons = document.querySelectorAll(".game-button");
     const startButton = document.querySelector(".start-button")
     const restartButton = document.querySelector(".restart-button")
+
     const gameBoard = GameBoard;
     const displayController = DisplayController();
+
+    const playerCount = document.querySelector(".player-count");
     const playerOneInput = document.querySelector("#player-1-name");
+    const playerTwoInput = document.querySelector("#player-2-name");
+
+    let turn = "player-1";
 
     //sets the board and displays it 
     gameBoard.gameReset();
@@ -109,6 +124,7 @@ const Game = (() => {
         gameBoard.gameStart();
         displayController.gameRender(gameBoard.gameBoard, 0);
         let playerOne = player(playerOneInput.value);
+        let playerTwo = player(playerTwoInput.value);
     })
 
     // event to set every tile and player names to default
@@ -119,7 +135,7 @@ const Game = (() => {
 
     gameButtons.forEach(tile => {
         tile.addEventListener("click", (e) => {
-            playerClickHandler(Number(e.target.id) - 1, "player-1")
+            playerClickHandler(Number(e.target.id) - 1, turn)
         })
     });
 
@@ -127,22 +143,36 @@ const Game = (() => {
         let h = 0
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                if (h == tile) {
-                    if (player == "player-1") {
-                        displayController.playerClickRender(Number(tile), "X");
-                        gameBoard.gameBoardChange(i, j, "X");
-                    } else {
-                        displayController.playerClickRender(Number(tile), "O");
-                        gameBoard.gameBoardChange(i, j, "O");
+                if (gameBoard.gameBoardIsTileAvailable(i, j)) {
+                    if (h == tile) {
+                        if (player == "player-1") {
+
+                            displayController.playerClickRender(tile, "X");
+                            gameBoard.gameBoardChange(i, j, "X");
+                        } else {
+
+                            displayController.playerClickRender(tile, "O");
+                            gameBoard.gameBoardChange(i, j, "O");
+                        }
+                        nextTurn();
                     }
 
                 }
                 h++;
             }
-
         }
     }
 
+    function nextTurn() {
 
+        if (turn == "player-1") {
+            turn = "player-2";
+            displayController.displayTurn(playerTwo.name);
+
+        } else {
+            turn = "player-1"
+            displayController.displayTurn(playerOne.name);
+        }
+    }
 
 })();

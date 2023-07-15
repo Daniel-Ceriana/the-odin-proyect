@@ -14,11 +14,12 @@
     <form action="">
         <article>
             <label for="players">Number of players</label>
-            <select name="players" id="players">
+            <select class="player-count" name="players" id="players">
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
         </article>
+
         <article>
             <label for="player-1-name">Player 1 name:</label>
             <input type="text" name="player-1-name" id="player-1-name">
@@ -35,7 +36,10 @@
 
         </article>
     </form>
-
+    <section>
+        <label> Turno: </label>
+        <label class="turn" for="turn"> player-1</label>
+    </section>
 
     <table>
         <tbody class="game-board-body">
