@@ -1,6 +1,5 @@
 //name of the player
 const player = (name) => {
-
     return { name }
 }
 
@@ -68,7 +67,14 @@ const DisplayController = () => {
     const buttonsLength = gameButtons.length;
     const gameBoardArray = [];
     const turnLabel = document.querySelector(".turn");
+    const playerCount = document.querySelector(".player-count");
+    const playerTwoInput = document.querySelector("#player-2-name")
 
+
+    playerCount.addEventListener("click", (e) => {
+        console.log("ALGO ESTA PASANDO")
+        checkNumberOfPlayers();
+    })
 
     function gameRender(gameBoard, start = 0) {
         const gameBoardLength = gameBoard.length;
@@ -95,7 +101,16 @@ const DisplayController = () => {
         turnLabel.textContent = turn;
     }
 
-    return { gameRender, playerClickRender, displayTurn };
+    function checkNumberOfPlayers() {
+        if (playerCount.value == 2) {
+            playerTwoInput.disabled = false;
+        } else {
+            playerTwoInput.disabled = true;
+        }
+        return playerCount.value;
+    }
+
+    return { gameRender, playerClickRender, displayTurn, checkNumberOfPlayers };
 }
 
 
@@ -108,10 +123,12 @@ const Game = (() => {
     const gameBoard = GameBoard;
     const displayController = DisplayController();
 
-    const playerCount = document.querySelector(".player-count");
+
     const playerOneInput = document.querySelector("#player-1-name");
     const playerTwoInput = document.querySelector("#player-2-name");
 
+    let playerOne = player("player-1");
+    let playerTwo = player("player-2");
     let turn = "player-1";
 
     //sets the board and displays it 
@@ -119,13 +136,31 @@ const Game = (() => {
     displayController.gameRender(gameBoard.gameBoard, 1);
 
 
-    //event to start the game
+    //event to start the game with logic for number of players
     startButton.addEventListener("click", () => {
         gameBoard.gameStart();
         displayController.gameRender(gameBoard.gameBoard, 0);
-        let playerOne = player(playerOneInput.value);
-        let playerTwo = player(playerTwoInput.value);
+
+        //player names
+        if (displayController.checkNumberOfPlayers == 2) {
+            if (playerNameIsValid(playerTwoInput.value)) {
+                playerTwo.name = playerTwoInput.value;
+            }
+
+        }
+        if (playerNameIsValid(playerOneInput.value)) {
+            playerOne.name = playerOneInput.value
+        }
+
     })
+
+    function playerNameIsValid(name) {
+        if (name.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // event to set every tile and player names to default
     restartButton.addEventListener("click", () => {
@@ -135,7 +170,7 @@ const Game = (() => {
 
     gameButtons.forEach(tile => {
         tile.addEventListener("click", (e) => {
-            playerClickHandler(Number(e.target.id) - 1, turn)
+            playerClickHandler(Number(e.target.id) - 1, turn);
         })
     });
 
