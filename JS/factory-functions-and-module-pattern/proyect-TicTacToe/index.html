@@ -14,25 +14,34 @@
     <form action="">
         <article>
             <label for="players">Number of players</label>
-            <select class="player-count" name="players" id="players">
-                <option value="1">1</option>
-                <option value="2">2</option>
-            </select>
+
+            <article>
+                <section>
+                    <label for="player-count">One:</label>
+                    <input type="radio" class="player-count" name="player-count" id="1" checked>
+                </section>
+                <section>
+                    <label for="player-count">Two:</label>
+                    <input type="radio" class="player-count" name="player-count" id="2">
+                </section>
+
+            </article>
+
         </article>
 
         <article>
             <label for="player-1-name">Player 1 name:</label>
-            <input type="text" name="player-1-name" id="player-1-name">
+            <input type="text" name="player-1-name" id="player-1-name" placeholder="player1">
         </article>
         <article>
-            <label for="player-2-name">Player 2 name:</label>
-            <input type="text" name="player-2-name" id="player-2-name" disabled>
+            <label for="player-2-name">Player 2 or IA name:</label>
+            <input type="text" name="player-2-name" id="player-2-name" disabled placeholder="player2">
             <!-- logica para que cuando el select tenga dos jugadores, lo habilite -->
         </article>
 
         <article>
             <button class="start-button" type="button">Start</button>
-            <button class="restart-button" type="button">Restart</button>
+            <button class="restart-button" type="button">Reset</button>
 
         </article>
     </form>
@@ -66,12 +75,12 @@
 
 
         <article>
-            <label for="player-1-wins">player 1 wins:</label>
-            <label for="">asd</label>
+            <label for="">player 1 wins:</label>
+            <label class="player-1-wins" for="player-1-wins">0</label>
         </article>
         <article>
-            <label for="player-2-wins">player 2 wins:</label>
-            <label for="">asd</label>
+            <label for="">player 2 wins:</label>
+            <label class="player-2-wins" for="player-2-wins">0</label>
         </article>
     </section>
     <script src="script/index.js" defer></script>
