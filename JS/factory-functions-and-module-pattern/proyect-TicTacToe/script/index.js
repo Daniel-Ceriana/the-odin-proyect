@@ -10,18 +10,18 @@ const player = (name) => {
 }
 
 const GameBoard = (() => {
-    const rows = 3;
-    const columns = 3;
+    const _rows = 3;
+    const _columns = 3;
     const gameBoard = [];
 
 
     //sets everything so that the game starts
     function gameStart() {
         let x = 1;
-        for (let i = 0; i < columns; i++) {
+        for (let i = 0; i < _columns; i++) {
 
             gameBoard[i] = []
-            for (let j = 0; j < rows; j++) {
+            for (let j = 0; j < _rows; j++) {
                 gameBoard[i].push(x);
                 x++
             }
@@ -108,10 +108,10 @@ const GameBoard = (() => {
     function gameReset() {
 
         let x = 1;
-        for (let i = 0; i < columns; i++) {
+        for (let i = 0; i < _columns; i++) {
 
             gameBoard[i] = []
-            for (let j = 0; j < rows; j++) {
+            for (let j = 0; j < _rows; j++) {
                 gameBoard[i].push(x);
                 x++
             }
@@ -122,12 +122,12 @@ const GameBoard = (() => {
 
 
 
-    function gameBoardChange(i, j, value) {
-        gameBoard[i][j] = value
+    function gameBoardChange(row, column, value) {
+        gameBoard[row][column] = value;
     }
 
-    function gameBoardIsTileAvailable(indexI, indexJ) {
-        if (gameBoard[indexI][indexJ] != "X" && gameBoard[indexI][indexJ] != "O") {
+    function gameBoardIsTileAvailable(row, column) {
+        if (gameBoard[row][column] != "X" && gameBoard[row][column] != "O") {
             return true;
         } else {
             return false;
@@ -223,13 +223,31 @@ const DisplayController = () => {
         return returnVal;
     }
 
-    return { gameRender, playerClickRender, displayTurn, checkNumberOfPlayers, addPlayerWin, resetPlayerWins };
+    function Tie() {
+        console.log("Tie");
+
+    }
+
+    return { gameRender, playerClickRender, displayTurn, checkNumberOfPlayers, addPlayerWin, resetPlayerWins, Tie };
+}
+
+
+
+const Ia = () => {
+
+    function selectRandomTile() {
+        console.log(Math.floor(Math.random() * 9));
+
+    }
+
+    return { selectRandomTile }
 }
 
 
 //IIFE
 // game flow logic
 const Game = (() => {
+    const ia = Ia();
     const gameButtons = document.querySelectorAll(".game-button");
     const startButton = document.querySelector(".start-button")
     const restartButton = document.querySelector(".restart-button")
@@ -244,6 +262,7 @@ const Game = (() => {
     let playerOne = player("player-1");
     let playerTwo = player("player-2");
     let turn = "player-1";
+
 
     //sets the board and displays it 
     gameBoard.gameReset();
@@ -286,7 +305,7 @@ const Game = (() => {
         displayController.displayTurn(playerOne.name);
         gameBoard.gameReset();
         displayController.gameRender(gameBoard.gameBoard, 1);
-        displayController.resetPlayerWins();
+        // displayController.resetPlayerWins();
     })
 
     gameButtons.forEach(tile => {
@@ -297,7 +316,7 @@ const Game = (() => {
 
     function playerClickHandler(tile, player) {
         let h = 0
-        let asd;
+        let gameOver;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 if (gameBoard.gameBoardIsTileAvailable(i, j)) {
@@ -306,18 +325,20 @@ const Game = (() => {
 
                             displayController.playerClickRender(tile, "X");
                             gameBoard.gameBoardChange(i, j, "X");
+                            console.log(i, j);
                         } else {
 
                             displayController.playerClickRender(tile, "O");
                             gameBoard.gameBoardChange(i, j, "O");
                         }
-                        asd = gameBoard.isGameOver();
-                        if (asd == 1) {
+                        gameOver = gameBoard.isGameOver();
+                        if (gameOver == 1) {
                             displayController.addPlayerWin(turn);
-                        } else if (asd == 2) {
+                        } else if (gameOver == 2) {
+                            displayController.Tie();
                             console.log("Tie");
                         };
-
+                        ia.selectRandomTile();
                         nextTurn();
                     }
 
